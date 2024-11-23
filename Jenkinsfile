@@ -1,24 +1,43 @@
-pipeline {
+pipeline{
     agent any
-    tools {
-        maven "maven_3"
-    }
-    stages {
-        stage('Build') {
-            steps {
-                // Get some code from a GitHub repository
-                git 'git@github.com:kmayer10/maven-sample-project.git'
-                // Run Maven on a Unix agent.
-                sh "mvn -Dmaven.test.failure.ignore=true clean package"
-            }
 
-            post {
-                // If Maven was able to run the tests, even if some of the test
-                // failed, record the test results and archive the jar file.
-                success {
-                    archiveArtifacts 'target/devops.war'
-                }
+    stages{
+        stage('clean'){
+            steps
+            {   
+                bat 'C:/Build/apache-maven-3.9.8/bin/mvn clean'
             }
         }
+ stage('validate'){
+            steps
+            {   
+                bat 'C:/Build/apache-maven-3.9.8/bin/mvn validate'
+            }
+        }
+stage('compile'){
+            steps
+            {   
+                bat 'C:/Build/apache-maven-3.9.8/bin/mvn compile'
+            }
+        }
+stage('test'){
+            steps
+            {   
+                bat 'C:/Build/apache-maven-3.9.8/bin/mvn test'
+            }
+        }
+stage('package'){
+            steps
+            {   
+                bat 'C:/Build/apache-maven-3.9.8/bin/mvn package'
+            }
+        }
+stage('install'){
+            steps
+            {   
+                bat 'C:/Build/apache-maven-3.9.8/bin/mvn install'
+            }
+        }
+
     }
 }
